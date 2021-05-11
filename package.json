@@ -3,7 +3,9 @@
   "description": "Accessibility testing tool",
   "version": "0.0.1",
   "license": "MPL-2.0",
-  "homepage": "https://www.aslint.org/",
+  "author": {
+    "name": "eSSENTIAL Accessibility"
+  },
   "keywords": [
     "Accessibility",
     "a11y",
@@ -68,5 +70,13 @@
     "ts-node": "9.1.1",
     "typescript": "4.2.4",
     "typescript-eslint": "0.0.1-alpha.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:essentialaccessibility/aslint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/essentialaccessibility/aslint/issues"
+  },
+  "homepage": "https://github.com/essentialaccessibility/aslint#aslint"
 }
