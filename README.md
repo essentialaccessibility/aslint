@@ -183,4 +183,4 @@ Please refer to https://www.aslint.org/contributing
 
 ## Acknowledgements
 
-Thanks to the [Cezary Tomczyk](https://www.ctomczyk.pl/) for inventing ASLint and making a substantial contribution to the design and development.
+Thanks to [Cezary Tomczyk](https://www.ctomczyk.pl/) for inventing ASLint and making a substantial contribution to the design and development.
