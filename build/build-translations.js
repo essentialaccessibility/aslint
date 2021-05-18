@@ -5,8 +5,6 @@ const path = require('path');
 const fs = require('fs');
 const glob = require('glob-all');
 const stripBom = require('strip-bom');
-const compressSync = require('zlib').brotliCompress;
-const compressing = require('compressing');
 const shell = require('shelljs');
 
 const rootDir = path.resolve(__dirname, '../');
@@ -46,30 +44,6 @@ function readFile(filePath) {
 
 function saveFile(filePath, content) {
   fs.writeFileSync(filePath, normalizeEOL(JSON.stringify(content, null, 2)));
-}
-
-function handleError(error) {
-  console.error('[processTranslations] compress error', error);
-}
-
-function compressFile(filePath) {
-  console.log('[compressFile] compressing', filePath, '\n');
-
-  function onCompressDone(error, result) {
-    if (error) {
-      console.error('[processTranslations] compress Brotli error', error);
-
-      return;
-    }
-
-    fs.writeFileSync(`${filePath}.br`, result, 'utf8');
-  }
-
-  const input = Buffer.from(readFile(filePath), 'utf-8');
-
-  compressSync(input, onCompressDone);
-
-  compressing.gzip.compressFile(filePath, `${filePath}.gz`).catch(handleError);
 }
 
 function removeUnusedKey(defaultLanguage, currentLanguage, key) {
@@ -177,7 +151,6 @@ function action() {
 
     saveFile(TRANSLATIONS_ASLINT_PATH + filename, language);
     saveFile(TRANSLATIONS_ASLINT_DIST_PATH + filename, transformedLanguage);
-    compressFile(TRANSLATIONS_ASLINT_DIST_PATH + filename);
   }
 
   glob.sync(aslintPaths).forEach(processLanguageASLint);
@@ -195,7 +168,6 @@ function action() {
     `${TRANSLATIONS_ASLINT_DIST_PATH + DEFAULT_LANGUAGE}.json`,
     transformedASLintDefaultLanguage
   );
-  compressFile(`${TRANSLATIONS_ASLINT_DIST_PATH + DEFAULT_LANGUAGE}.json`);
 
   saveFile(defaultASLintLanguageFilePath, defaultASLintLanguage);
 }
