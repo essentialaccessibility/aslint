@@ -12,7 +12,7 @@ First download the package:
 
 Now include the script:
 
-    <script src="node_modules/aslint/aslint.min.js"></script>
+    <script src="node_modules/aslint/dist/aslint.bundle.js"></script>
 
 ## Creating ASLint package
 
