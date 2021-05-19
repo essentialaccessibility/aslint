@@ -50,6 +50,26 @@ describe('Rules', () => {
       expect(Validator.getReport('report_0').ruleId).toBe('accessible-svg');
     });
 
+    it('should return no reports for svg when element is hidden for AT using aria-hidden="true"', () => {
+      fakeDom.innerHTML = '<div ><svg version="1.1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg></div>';
+
+      const nodes = DomUtility.querySelectorAllExclude('svg', fakeDom) as SVGElement[];
+
+      new AccessibleSvg().validate(nodes);
+
+      expect(Object.keys(Validator.getReports()).length).toBe(0);
+    });
+
+    it('should return no reports for svg when element is hidden for AT using aria-hidden="true" on the parent element', () => {
+      fakeDom.innerHTML = '<div aria-hidden="true"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg></div>';
+
+      const nodes = DomUtility.querySelectorAllExclude('svg', fakeDom) as SVGElement[];
+
+      new AccessibleSvg().validate(nodes);
+
+      expect(Object.keys(Validator.getReports()).length).toBe(0);
+    });
+
   });
 
 });

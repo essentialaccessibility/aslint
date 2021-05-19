@@ -1,7 +1,7 @@
 import 'array-flat-polyfill';
 
 import runnerSettings from './config/runnerSettings.json';
-import packageJSON from '../package.json';
+import { version } from '../package.json';
 import { Config } from './config';
 import { Console } from './utils/console';
 import { Validator } from './validator';
@@ -29,7 +29,7 @@ export class App {
     this.references = {};
     this.configInstance = Config.getInstance();
     this.loadRules = new LoadRules();
-    this.version = packageJSON.version;
+    this.version = version;
 
     Console.init();
   }

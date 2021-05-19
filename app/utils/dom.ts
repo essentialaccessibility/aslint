@@ -11,8 +11,6 @@ export class DomUtility {
   private static regExpTest: RegExp['test'] = RegExp.prototype.test;
   private static nonSpaceRe: RegExp = /\S/;
 
-  constructor() { }
-
   public static isNativelyDisableable(element: Element | Node & ParentNode): boolean {
     return element.nodeName.toUpperCase() in NATIVELY_DISABLEABLE;
   }
@@ -727,6 +725,31 @@ export class DomUtility {
     return result;
   }
 
+  public static isHiddenForAT(element: Element): boolean {
+    let result: boolean = false;
+    const root: HTMLElement = DomUtility.getRootElement();
+    let parent: Element | null = element;
+    let ariaHidden: string | null = null;
+
+    while (parent !== root) {
+      if (parent === null || parent.parentElement === null) {
+        break;
+      }
+
+      ariaHidden = parent.getAttribute('aria-hidden');
+
+      if (parent && typeof ariaHidden === 'string' && ariaHidden === 'true') {
+        result = true;
+
+        break;
+      }
+
+      parent = parent.parentElement;
+    }
+
+    return result;
+  }
+
   public static getTextFromDescendantContent(node: Element): string {
     const onlyTextNodes = (previousValue: string, currentValue: ChildNode, _currentIndex: number, _array: ChildNode[]): string => {
       if (currentValue.nodeType === NODE_TYPE.TEXT_NODE) {
@@ -737,9 +760,7 @@ export class DomUtility {
       return previousValue;
     };
 
-    const text: string = Array.from(node.childNodes).reduce(onlyTextNodes, '');
-
-    return text;
+    return Array.from(node.childNodes).reduce(onlyTextNodes, '');
   }
 
   /**

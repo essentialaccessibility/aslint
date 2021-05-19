@@ -2,10 +2,10 @@ import { CATEGORY_TYPE } from '../../../../../../constants/categoryType';
 import { IIssueReport } from '../../../../../../interfaces/rule-issue.interface';
 import { TextUtility } from '../../../../../../utils/text';
 import { TranslateService } from '../../../../../../services/translate';
-import { $severity } from '../../../../../../constants/accessibility';
-import { $accessibilityAuditRules } from '../../../../../../constants/accessibility';
+import { $severity, $accessibilityAuditRules } from '../../../../../../constants/accessibility';
 import { AbstractRule, IAbstractRuleConfig } from '../../../../../abstract-rule';
 import { ObjectUtility } from '../../../../../../utils/object';
+import { DomUtility } from '../../../../../../utils/dom';
 
 /*
  * https://www.w3.org/TR/svg-aam-1.0/
@@ -53,9 +53,9 @@ export class AccessibleSvg extends AbstractRule {
         return;
       }
 
-      const ariaHidden: string | null = svgElement.getAttribute('aria-hidden');
+      const isHiddenForATbyParent: boolean = DomUtility.isHiddenForAT(svgElement);
 
-      if (typeof ariaHidden === 'string' && ariaHidden === 'true') {
+      if (isHiddenForATbyParent) {
         return;
       }
 
