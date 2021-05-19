@@ -37,7 +37,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "3.4.0",
     "array-flat-polyfill": "1.0.1",
-    "fetch-ie8": "1.5.0"
+    "whatwg-fetch": "3.6.2"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",

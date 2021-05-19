@@ -1,4 +1,3 @@
-import 'fetch-ie8';
 import { isReadable, readability, TinyColor } from '@ctrl/tinycolor';
 
 import { TextUtility } from '../../../../../../utils/text';
