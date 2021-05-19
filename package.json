@@ -1,7 +1,7 @@
 {
   "name": "aslint",
   "description": "Accessibility testing tool",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MPL-2.0",
   "author": {
     "name": "eSSENTIAL Accessibility"
@@ -32,7 +32,7 @@
     "lint": "npm run lint:markdown && npm run lint:scripts && dpdm --transform=true --tree=false --warning=false ./app/app.ts",
     "precommit": "npm run lint",
     "prepare": "husky install",
-    "release": "npm publish && standard-version -a"
+    "release": "standard-version -a && npm publish"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.4.0",
