@@ -34,7 +34,7 @@
     "prepare": "husky install",
     "prerelease": "npm run lint && npm run test",
     "release": "standard-version --no-verify",
-    "postrelease": "npm run build:all && git add dist && git push origin main && npm publish"
+    "postrelease": "npm run build:all && git add dist && git commit -m \"Updating ASLint package with a new version\" && git push origin main && npm publish"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.4.0",
