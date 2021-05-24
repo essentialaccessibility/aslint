@@ -33,7 +33,7 @@
     "precommit": "npm run lint",
     "prepare": "husky install",
     "prerelease": "npm run lint && npm run test && npm run build:all && git add dist",
-    "release": "standard-version && git push --follow-tags origin main && npm publish"
+    "release": "standard-version && npm publish"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.4.0",
