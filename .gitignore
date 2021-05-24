@@ -1,3 +1,6 @@
+# Distributable assets
+dist/
+
 # Node artifact files
 node_modules
 package-lock.json
