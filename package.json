@@ -32,8 +32,9 @@
     "lint": "npm run lint:markdown && npm run lint:scripts && dpdm --transform=true --tree=false --warning=false ./app/app.ts",
     "precommit": "npm run lint",
     "prepare": "husky install",
-    "prerelease": "npm run lint && npm run test && npm run build:all && git add dist",
-    "release": "standard-version && npm publish"
+    "prerelease": "npm run lint && npm run test",
+    "release": "standard-version",
+    "postrelease": "npm run build:all && git add dist && git push --follow-tags origin main && npm publish"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.4.0",

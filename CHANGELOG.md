@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.9](https://github.com/essentialaccessibility/aslint/compare/v0.0.2...v0.0.9) (2021-05-24)
 
+### [0.0.9](https://github.com/essentialaccessibility/aslint/compare/v0.0.2...v0.0.9) (2021-05-24)
+
 ### [0.0.8](https://github.com/essentialaccessibility/aslint/compare/v0.0.2...v0.0.8) (2021-05-24)
 
 ### [0.0.7](https://github.com/essentialaccessibility/aslint/compare/v0.0.2...v0.0.7) (2021-05-24)
