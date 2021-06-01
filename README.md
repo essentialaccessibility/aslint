@@ -129,12 +129,22 @@ To generate unit tests coverage report run `npm run test:coverage`. The report s
 
 ## Local Playground
 
+### ASLint itself
+
 To use ASLint locally using browser the file `app/index.html` is being used. In order to build and test ASLint locally follow steps:
 
 1. Create local domain `localhost.aslint.org` and set to 127.0.0.1.
 2. Point root path to `[location of ASLint]/dist`
 3. Run `npm run build:all` to create ASLint package, translations and copy `app/index.html`.
 4. Open browser and go to `localhost.aslint.org`.
+
+### End-to-end test
+
+To see ASLint in action you can run the example located at `examples/puppeteer/test.js`. That example uses framework [Puppeteer](https://github.com/puppeteer/puppeteer).
+
+To run example follow:
+
+1. Run `node examples/puppeteer/test.js`
 
 ## Technology stack
 

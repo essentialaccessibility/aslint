@@ -1,6 +1,6 @@
 /* eslint-disable no-sync */
 /* eslint-disable func-style */
-/* eslint-disable no-invalid-this */
+
 const path = require('path');
 const fs = require('fs');
 const glob = require('glob-all');
