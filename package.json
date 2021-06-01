@@ -17,7 +17,7 @@
     "aslint"
   ],
   "scripts": {
-    "postinstall": "husky install && npm run build:all",
+    "postinstall": "npm run build:all",
     "build:all": "shx rm -rf dist && npm run rebuild-translations && rollup --config ./rollup.config.js && npm run copy:files && echo \"Build completed\"",
     "build:dev": "BUILD=development npm run build:all",
     "build:prod": "BUILD=production npm run build:all",

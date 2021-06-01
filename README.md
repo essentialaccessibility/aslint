@@ -179,6 +179,10 @@ Please refer to https://www.aslint.org/coding-guidelines
 
 Contributions are welcome, and greatly appreciated! Contributing doesn't just mean submitting pull requests. There are many different ways for you to get involved, including answering questions on the issues, reporting or triaging bugs, and participating in the ASLint evolution process.
 
+### Technical
+
+After pulling ASLint run `npx husky install` to create git pre-commit hook with validation.
+
 ## Acknowledgements
 
 Thanks to [Cezary Tomczyk](https://www.ctomczyk.pl/) for inventing ASLint and making a substantial contribution to the design and development.
