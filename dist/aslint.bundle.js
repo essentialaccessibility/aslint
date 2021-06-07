@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.16";
+  var version = "0.0.17";
 
   class Func {
       static mixin(targetObject, ...sources) {
