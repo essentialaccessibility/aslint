@@ -37,7 +37,8 @@
       "h1",
       "p",
       "details",
-      "summary"
+      "summary",
+      "kbd"
     ]
   },
   "MD034": false,

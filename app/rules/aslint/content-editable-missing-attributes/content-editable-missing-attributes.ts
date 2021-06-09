@@ -3,8 +3,7 @@ import { CATEGORY_TYPE } from '../../../constants/categoryType';
 import { IIssueReport } from '../../../interfaces/rule-issue.interface';
 import { TextUtility } from '../../../utils/text';
 import { TranslateService } from '../../../services/translate';
-import { $severity } from '../../../constants/accessibility';
-import { $accessibilityAuditRules } from '../../../constants/accessibility';
+import { $accessibilityAuditRules, $severity } from '../../../constants/accessibility';
 import { AbstractRule, IAbstractRuleConfig } from '../../abstract-rule';
 
 export class ContentEditableMissingAttributes extends AbstractRule {
