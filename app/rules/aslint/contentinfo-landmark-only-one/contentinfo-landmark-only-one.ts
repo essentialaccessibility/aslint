@@ -1,9 +1,8 @@
 import { TextUtility } from '../../../utils/text';
 import { CATEGORY_TYPE } from '../../../constants/categoryType';
 import { IIssueReport } from '../../../interfaces/rule-issue.interface';
-import { $severity } from '../../../constants/accessibility';
+import { $accessibilityAuditRules, $severity } from '../../../constants/accessibility';
 import { TranslateService } from '../../../services/translate';
-import { $accessibilityAuditRules } from '../../../constants/accessibility';
 import { AbstractRule, IAbstractRuleConfig } from '../../abstract-rule';
 
 export class ContentinfoLandmarkOnlyOne extends AbstractRule {
