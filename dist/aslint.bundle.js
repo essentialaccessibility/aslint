@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.20";
+  var version = "0.0.23";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -14447,7 +14447,8 @@
             ':not(script)',
             ':not(style)',
             ':not(title)',
-            ':not(noscript)'
+            ':not(noscript)',
+            ':not(template)'
         ].join('')}`;
           this.ruleConfig = {
               id: TextUtility.convertUnderscoresToDashes($accessibilityAuditRules.elements_not_allowed_in_head),

@@ -60,7 +60,7 @@
     "jest": "26.6.3",
     "jest-expect-message": "1.0.2",
     "markdownlint-cli": "0.27.1",
-    "rollup": "2.51.1",
+    "rollup": "2.51.2",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-html": "0.2.1",
     "rollup-plugin-json": "4.0.0",

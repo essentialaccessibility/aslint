@@ -7,7 +7,7 @@ describe('Rules', () => {
   describe('ElementsNotAllowed#', () => {
 
     let fakeDom;
-    const VALID_ELEMENTS: string[] = [':not(base)', ':not(link)', ':not(meta)', ':not(script)', ':not(style)', ':not(title)', ':not(noscript)'];
+    const VALID_ELEMENTS: string[] = [':not(base)', ':not(link)', ':not(meta)', ':not(script)', ':not(style)', ':not(title)', ':not(noscript)', ':not(template)'];
     const selector = `head *${VALID_ELEMENTS.join('')}`;
 
     new ElementsNotAllowed().registerValidator();
