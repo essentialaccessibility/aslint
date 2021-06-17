@@ -4,6 +4,7 @@ import { $severity } from '../constants/accessibility';
 import { DomUtility } from '../utils/dom';
 import { Validator } from '../validator';
 import { Config } from '../config';
+import { Context } from '../interfaces/context.interface';
 
 type Nodes = Document[] | HTMLElement[] | Element[] | StyleSheetList[] | CSSStyleSheet[];
 
@@ -16,7 +17,7 @@ export interface IAbstractRuleConfig {
 }
 
 export abstract class AbstractRule implements IRule {
-  protected context: Document | Element | DocumentFragment;
+  protected context: Context;
   protected options: any;
   protected validator: typeof Validator;
   protected selector: string | (() => Nodes);
@@ -56,7 +57,7 @@ export abstract class AbstractRule implements IRule {
   }
 
   // eslint-disable-next-line require-await
-  public async run(context: Document | Element | DocumentFragment, validator?: typeof Validator, options?: any): Promise<void> {
+  public async run(context: Context, validator?: typeof Validator, options?: any): Promise<void> {
     this.context = context;
     this.options = (typeof options === 'object') ? options : {};
     this.validator = (typeof validator !== 'undefined') ? validator : Validator;

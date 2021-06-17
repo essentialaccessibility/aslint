@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.23";
+  var version = "0.0.25";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -14542,7 +14542,8 @@
   class EmptyTitleAttribute extends AbstractRule {
       constructor() {
           super(...arguments);
-          this.selector = `[title=""]:not(img)${[
+          this.selector = `[title]${[
+            ':not(img)',
             ':not(html)',
             ':not(head)',
             ':not(title)',
@@ -14555,8 +14556,7 @@
             ':not(noscript)',
             ':not(iframe)',
             ':not(br)',
-            ':not(hr)',
-            ':not(:empty)'
+            ':not(hr)'
         ].join('')}`;
           this.ruleConfig = {
               id: TextUtility.convertUnderscoresToDashes($accessibilityAuditRules.empty_title_attribute),
@@ -14573,6 +14573,10 @@
       }
       validate(elements) {
           const reportEmptyTitle = (element) => {
+              const titleAttribute = element.getAttribute('title');
+              if (titleAttribute === null || titleAttribute.trim().length > 0) {
+                  return;
+              }
               const report = {
                   message: TranslateService.instant('empty_title_attribute_report_message'),
                   node: element,

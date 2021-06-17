@@ -15,7 +15,7 @@ import { $auditIssue, $auditRuleSkipReason } from './constants/accessibility';
 import {
   IAslintReport, IAslintReportSummary, IAslintRuleReport, IAslintRuleReportResult, IAslintRuleReportStatusType, IAslintRulesReports, IAslintSummaryByCategory, IAslintSummaryByRule, IAslintSummaryBySuccessCriteria, IReportIssuesSummary
 } from './interfaces/aslint-report.interface';
-import { IHtmlInfo } from './interfaces/context.interface';
+import { Context, IHtmlInfo } from './interfaces/context.interface';
 import { wcag } from './constants/accessibility-standards/wcag';
 import { bestPractice } from './constants/accessibility-standards/essential';
 import { busEvent } from './constants/events';
@@ -24,7 +24,7 @@ import { Global } from './utils/global';
 
 interface IRegisteredRule {
   ruleConfig: IAbstractRuleConfig;
-  ruleTest: (context: Document | Element | DocumentFragment, validator?: typeof Validator, options?: any) => Promise<void>;
+  ruleTest: (context: Context, validator?: typeof Validator, options?: any) => Promise<void>;
   totalElementsEvaluated: number;
   results: any[];
 }
@@ -38,7 +38,7 @@ export class Validator {
   private static REPORT_ID_PREFIX: string = 'report_';
   private static TIMEOUT: number = 4; // See: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout#reasons_for_delays
   private static uniqueProblemId: number = 0;
-  private static contextElement: Document | Element | DocumentFragment;
+  private static contextElement: Context;
   private static reports: Record<string, IReportedProblem> = {};
   private static config: Config = Config.getInstance();
 
@@ -328,7 +328,7 @@ export class Validator {
     Bus.publish(busEvent.onValidatorReset);
   }
 
-  public static async runTestsAsynchronously(context: Document | Element | DocumentFragment): Promise<void> {
+  public static async runTestsAsynchronously(context: Context): Promise<void> {
     const runAsyncSingleRule = (ruleId: string): Promise<any> => {
 
       const wrapperAsyncSingleRule = async (): Promise<void> => {
@@ -391,7 +391,7 @@ export class Validator {
     Validator.endOfTesting();
   }
 
-  public static async runTestsSynchronously(context: Document | Element | DocumentFragment): Promise<void> {
+  public static async runTestsSynchronously(context: Context): Promise<void> {
     const evaluationPerformanceStart: number = performance.now();
 
     const runSyncSingleRule = async (ruleId: string): Promise<void> => {
@@ -424,7 +424,7 @@ export class Validator {
 
   public static register(
     ruleConfig: IAbstractRuleConfig,
-    ruleTest: (context: Document | Element | DocumentFragment, internalValidator?: typeof Validator, validatorOptions?: any) => Promise<void>
+    ruleTest: (context: Context, internalValidator?: typeof Validator, validatorOptions?: any) => Promise<void>
   ): void {
 
     if (Validator.rules[ruleConfig.id]) {
@@ -499,7 +499,7 @@ export class Validator {
     }
   }
 
-  public static runTests(contextElement: Document | Element | DocumentFragment): void {
+  public static runTests(contextElement: Context): void {
     Validator.reset();
 
     Validator.contextElement = contextElement;

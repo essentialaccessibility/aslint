@@ -17,6 +17,7 @@ import { RuleFactory } from './rules/rule.factory';
 import { busEvent } from './constants/events';
 import { TextUtility } from './utils/text';
 import { IRuleOptions } from './interfaces/rule.interface';
+import { Context } from './interfaces/context.interface';
 export class App {
   private references: { [key: string]: Function };
   private configInstance: Config;
@@ -52,11 +53,11 @@ export class App {
     Bus.unsubscribe(busEvent.onValidatorComplete, this.configInstance.get($runnerSettings.resultsCallback));
   }
 
-  private runValidatorTests(context: Document | Element | DocumentFragment): void {
+  private runValidatorTests(context: Context): void {
     Validator.runTests(context);
   }
 
-  private watchContextMutations(context: Document | Element | DocumentFragment, runner: () => void): void {
+  private watchContextMutations(context: Context, runner: () => void): void {
     if (this.mutationObserver instanceof MutationObserver) {
       this.mutationObserver.disconnect();
     }
@@ -166,7 +167,6 @@ export class App {
     ruleFactory.validate = validator.bind(ruleFactory);
     ruleFactory.registerValidator();
 
-    // TODO: fix it!
     if (typeof ruleOptions !== 'undefined') {
       this.configInstance.get($runnerSettings.rules)[ruleId] = ruleOptions;
     }
@@ -200,7 +200,7 @@ export class App {
     this.config();
 
     const context: string | Element | Document | DocumentFragment = this.configInstance.get($runnerSettings.context);
-    const contextElement: Document | Element | DocumentFragment | null = Validator.getContextElement(context);
+    const contextElement: Context | null = Validator.getContextElement(context);
 
     if (contextElement === null) {
       let contextError: string;

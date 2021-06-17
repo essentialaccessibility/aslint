@@ -5,7 +5,7 @@ import { NODE_TYPE } from '../constants/nodeType';
 import { Css } from './css';
 import { TextUtility } from './text';
 import { ObjectUtility } from './object';
-import { IContextElement, IHtmlInfo } from '../interfaces/context.interface';
+import { Context, IContextElement, IHtmlInfo } from '../interfaces/context.interface';
 
 export class DomUtility {
   private static regExpTest: RegExp['test'] = RegExp.prototype.test;
@@ -252,7 +252,7 @@ export class DomUtility {
    * See https://support.cloudflare.com/hc/en-us/articles/200168056-What-does-Rocket-Loader-do-
    */
 
-  public static querySelectorAllExclude(selector: string, context?: Document | Element | DocumentFragment | null, excludeContainers?: HTMLElement | null | undefined | (HTMLElement | null)[], excludeElements?: HTMLElement | null | undefined | HTMLElement[]): Element[] | null {
+  public static querySelectorAllExclude(selector: string, context?: Context | null, excludeContainers?: HTMLElement | null | undefined | (HTMLElement | null)[], excludeElements?: HTMLElement | null | undefined | HTMLElement[]): Element[] | null {
     const queryResults: NodeListOf<Element> = context ? context.querySelectorAll(selector) : document.querySelectorAll(selector);
 
     let _excludeContainers: (HTMLElement | null)[] = [];
@@ -487,7 +487,7 @@ export class DomUtility {
   }
 
   // Note about XPath: https://www.bennadel.com/blog/2142-using-and-expressions-in-xpath-xml-search-directives-in-coldfusion.htm
-  public static getXPath(el: Document | Element | DocumentFragment): string {
+  public static getXPath(el: Context): string {
     let element: Element | Node & ParentNode = el;
     let parent: Element | Node & ParentNode | null;
     let sames: Node[];
