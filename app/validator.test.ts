@@ -70,7 +70,6 @@ describe('Validator', () => {
       Bus.subscribe(busEvent.onValidatorStarted, validatorStarted);
       Bus.subscribe(busEvent.onBusyIndicatorOn, busyIndicatorOn);
 
-      debugger;
       Validator.runTests(fakeDom);
 
       expect(validatorStarted).toHaveBeenCalled();
