@@ -561,20 +561,6 @@ describe('Utils', () => {
 
     });
 
-    describe('#getBodyChildrenExceptAslint', () => {
-      let sourceHtml: string;
-      let htmlBody: HTMLElement;
-
-      beforeAll(() => {
-        htmlBody = DomUtility.getBodyElement() as HTMLElement;
-        sourceHtml = htmlBody.innerHTML;
-      });
-
-      afterAll(() => {
-        htmlBody.innerHTML = sourceHtml;
-      });
-    });
-
     describe('#getElementAttribute', () => {
 
       it('should return null when a given attribute does not exists on specified Element', () => {

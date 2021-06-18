@@ -13,7 +13,7 @@ describe('Services', () => {
 
       it('should subscribe listener on event', () => {
 
-        const spy = jasmine.createSpy('spy');
+        const spy = jest.fn();
 
         Bus.subscribe(busEvent.onValidatorComplete, spy);
         Bus.publish(busEvent.onValidatorComplete);
@@ -23,8 +23,8 @@ describe('Services', () => {
 
       it('should subscribe listener on existing event', () => {
 
-        const spy = jasmine.createSpy('spy'),
-          spy2 = jasmine.createSpy('spy2');
+        const spy = jest.fn();
+        const spy2 = jest.fn();
 
         Bus.subscribe(busEvent.onValidatorComplete, spy);
         Bus.subscribe(busEvent.onValidatorComplete, spy2);
@@ -46,7 +46,7 @@ describe('Services', () => {
 
       it('should unsubscribe listener on event', () => {
 
-        const spy = jasmine.createSpy('spy');
+        const spy = jest.fn();
 
         Bus.subscribe(busEvent.onValidatorComplete, spy);
         Bus.unsubscribe(busEvent.onValidatorComplete, spy);
@@ -75,12 +75,13 @@ describe('Services', () => {
 
       it('should subscribe listener on event, but publish it only once', () => {
 
-        const spy = jasmine.createSpy('spy');
+        const spy = jest.fn();
 
         Bus.subscribeOnce(busEvent.onValidatorComplete, spy);
         Bus.publish(busEvent.onValidatorComplete);
         Bus.publish(busEvent.onValidatorComplete);
-        expect(spy.calls.count()).toEqual(1);
+
+        expect(spy.mock.calls.length).toEqual(1);
       });
 
     });
@@ -89,7 +90,7 @@ describe('Services', () => {
 
       it('should publish event', () => {
 
-        const spy = jasmine.createSpy('spy');
+        const spy = jest.fn();
 
         Bus.subscribe(busEvent.onValidatorComplete, spy);
         Bus.publish(busEvent.onValidatorComplete);

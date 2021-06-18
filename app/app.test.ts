@@ -17,7 +17,7 @@ describe('App', () => {
   describe('#init', () => {
 
     it('should initalize an application', () => {
-      spyOn(Console, 'init');
+      jest.spyOn(Console, 'init');
 
       app = new App();
 

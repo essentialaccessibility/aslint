@@ -30,8 +30,8 @@ describe('Validator', () => {
 
     it('should run asynchronously tests', () => {
 
-      const validatorStarted = jasmine.createSpy('validatorStarted');
-      const busyIndicatorOn = jasmine.createSpy('busyIndicatorOn');
+      const validatorStarted = jest.fn();
+      const busyIndicatorOn = jest.fn();
 
       fakeDom.innerHTML = '<p>test <span>example</span></p>';
 
@@ -55,13 +55,13 @@ describe('Validator', () => {
 
     it('should run synchronously tests', () => {
 
-      const validatorStarted = jasmine.createSpy('validatorStarted');
-      const busyIndicatorOn = jasmine.createSpy('busyIndicatorOn');
-      const asyncRun = spyOn(Async, 'run');
+      const validatorStarted = jest.fn();
+      const busyIndicatorOn = jest.fn();
+      const asyncRun = jest.spyOn(Async, 'run');
 
       fakeDom.innerHTML = '<p>test <span>example</span></p>';
 
-      asyncRun.calls.reset();
+      asyncRun.mockReset();
 
       const asyncRunner = config.get('asyncRunner');
 
@@ -70,11 +70,12 @@ describe('Validator', () => {
       Bus.subscribe(busEvent.onValidatorStarted, validatorStarted);
       Bus.subscribe(busEvent.onBusyIndicatorOn, busyIndicatorOn);
 
+      debugger;
       Validator.runTests(fakeDom);
 
       expect(validatorStarted).toHaveBeenCalled();
       expect(busyIndicatorOn).toHaveBeenCalledWith('Validating HTML 2 elements.', true);
-      expect(asyncRun.calls.count()).toBe(0);
+      expect(asyncRun.mock.calls.length).toBe(0);
 
       Bus.unsubscribe(busEvent.onValidatorStarted, validatorStarted);
       Bus.unsubscribe(busEvent.onBusyIndicatorOn, busyIndicatorOn);

@@ -395,7 +395,7 @@ describe('Utils', () => {
 
         ObjectUtility.setProperty(o, 'just.another.property', true);
 
-        expect(o).toEqual(jasmine.objectContaining({
+        expect(o).toEqual(expect.objectContaining({
           just: {
             another: {
               property: true

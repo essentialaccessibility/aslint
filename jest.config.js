@@ -26,6 +26,7 @@ module.exports = {
   setupFilesAfterEnv: [
     'jest-expect-message'
   ],
+  testEnvironment: 'jsdom',
   testMatch: [
     '**/*.test.(ts|js)'
   ],
