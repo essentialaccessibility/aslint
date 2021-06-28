@@ -84,10 +84,6 @@
     "comment": "Add comment",
     "value": "Expected at least one heading <code>h1</code> element, but found none."
   },
-  "h1_only_one_report_message": {
-    "comment": "Add comment",
-    "value": "Expected only one heading element <code>%0</code>. You have %1 total."
-  },
   "headings_sibling_unique_report_message": {
     "comment": "Add comment",
     "value": "The accessible names of sibling heading elements of the same level are not unique. If section headings that share the same parent heading are not unique, users of assistive technologies will not be able to discern the differences among sibling sections of the web page. Same level <code>%0</code> and same description: <q>%1</q>."

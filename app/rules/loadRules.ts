@@ -17,7 +17,6 @@ import { FieldsetNoLegend } from './wcag2/1/1.3/1.3.1/H71/fieldset-no-legend';
 import { FlashContent } from './aslint/flash-content/flash-content';
 import { GroupElementsNameAttribute } from './wcag2/1/1.3/1.3.1/H71/group-elements-name-attribute';
 import { H1MustBe } from './aslint/h1-must-be/h1-must-be';
-import { H1OnlyOne } from './aslint/h1-only-one/h1-only-one';
 import { HeadingsSiblingUnique } from './aslint/headings-sibling-unique/headings-sibling-unique';
 import { HorizontalRule } from './aslint/horizontal-rule/horizontal-rule';
 import { IncorrectTechniqueForHidingContent } from './aslint/incorrect-technique-for-hiding-content/incorrect-technique-for-hiding-content';
@@ -147,7 +146,6 @@ export class LoadRules {
       new FlashContent(),
       new GroupElementsNameAttribute(),
       new H1MustBe(),
-      new H1OnlyOne(),
       new HeadingsSiblingUnique(),
       new HorizontalRule(),
       new IdentifyInputPurpose(),
