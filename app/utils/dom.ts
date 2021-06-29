@@ -7,6 +7,8 @@ import { TextUtility } from './text';
 import { ObjectUtility } from './object';
 import { Context, IContextElement, IHtmlInfo } from '../interfaces/context.interface';
 
+type FormElement = HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement;
+
 export class DomUtility {
   private static regExpTest: RegExp['test'] = RegExp.prototype.test;
   private static nonSpaceRe: RegExp = /\S/;
@@ -91,14 +93,14 @@ export class DomUtility {
       case 'output':
       case 'textarea':
         if (
-          (node as HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement).type === 'email' ||
-          (node as HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement).type === 'number' ||
-          (node as HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement).type === 'text' ||
-          (node as HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement).type === 'textarea'
+          (node as FormElement).type === 'email' ||
+          (node as FormElement).type === 'number' ||
+          (node as FormElement).type === 'text' ||
+          (node as FormElement).type === 'textarea'
         ) {
-          text += (node as HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement).value;
+          text += (node as FormElement).value;
         } else if (
-          (node as HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement).type === 'image' &&
+          (node as FormElement).type === 'image' &&
           typeof (node as HTMLInputElement).alt === 'string' &&
           (node as HTMLInputElement).alt.length
         ) {
