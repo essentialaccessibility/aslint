@@ -88,14 +88,6 @@
     "comment": "Add comment",
     "value": "The accessible names of sibling heading elements of the same level are not unique. If section headings that share the same parent heading are not unique, users of assistive technologies will not be able to discern the differences among sibling sections of the web page. Same level <code>%0</code> and same description: <q>%1</q>."
   },
-  "hidden_content_report_message1": {
-    "comment": "Add comment",
-    "value": "When the content is hidden and made visible using scripting (e.g. using an accordion feature) then make sure that this content is available when scripts or stylesheets are unavailable."
-  },
-  "hidden_content_report_message2": {
-    "comment": "Add comment",
-    "value": "The <code>aria-expanded</code> is used here to indicate current visibility state. When the content is hidden and made visible using scripting (e.g. using an accordion feature) then make sure that this content is available when scripts or stylesheets are unavailable."
-  },
   "horizontal_rule_report_message": {
     "comment": "Add comment",
     "value": "The <code>%0</code> element adds extra <q>noise</q> and can be confusing. For example VoiceOver reads it as <q>dimmed collapsed on top, horizontal separator</q>, Windows Narrator reads it as <q>end of line</q>. A better option is to replace <code>%1</code> with <code>%2</code> and use CSS for styling. Alternatively, <code>aria-hidden='true'</code> or <code>role='presentation'</code> can be applied to the <code>%3</code> element."

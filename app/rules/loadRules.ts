@@ -69,7 +69,6 @@ import { ObjectGeneralAlt } from './wcag2/1/1.1/1.1.1/H53/object-general-alt';
 import { ObjectMissingBody } from './wcag2/1/1.1/1.1.1/H53/object-missing-body';
 import { AudioVideoCaptions } from './wcag2/1/1.2/1.2.1/H95/audio-video-captions';
 import { VideoAudioDescriptions } from './wcag2/1/1.2/1.2.1/H96/video-audio-descriptions';
-import { HiddenContent } from './aslint/hidden-content/hidden-content';
 import { MeaningfulContentSequence } from './wcag2/1/1.3/1.3.2/G57/meaningful-content-sequence';
 import { TableRowAndColumnHeaders } from './wcag2/1/1.3/1.3.1/H51/table-row-and-column-headers';
 import { TitleiFrame } from './wcag2/4/4.1/4.1.2/H64/title-iframe';
@@ -202,7 +201,6 @@ export class LoadRules {
       new Overlay(),
       new AudioVideoCaptions(),
       new VideoAudioDescriptions(),
-      new HiddenContent(),
       new MeaningfulContentSequence(),
       new TableRowAndColumnHeaders(),
       new TitleiFrame(),

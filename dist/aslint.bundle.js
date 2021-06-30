@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.32";
+  var version = "0.0.34";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -12994,8 +12994,6 @@
   var flash_content_report_message = "Using Flash is generally not recommended as it is not supported everywhere (particularly iOS devices), is being deprecated in browsers, and frequently inaccessible.";
   var h1_must_report_message = "Expected at least one heading <code>h1</code> element, but found none.";
   var headings_sibling_unique_report_message = "The accessible names of sibling heading elements of the same level are not unique. If section headings that share the same parent heading are not unique, users of assistive technologies will not be able to discern the differences among sibling sections of the web page. Same level <code>%0</code> and same description: <q>%1</q>.";
-  var hidden_content_report_message1 = "When the content is hidden and made visible using scripting (e.g. using an accordion feature) then make sure that this content is available when scripts or stylesheets are unavailable.";
-  var hidden_content_report_message2 = "The <code>aria-expanded</code> is used here to indicate current visibility state. When the content is hidden and made visible using scripting (e.g. using an accordion feature) then make sure that this content is available when scripts or stylesheets are unavailable.";
   var horizontal_rule_report_message = "The <code>%0</code> element adds extra <q>noise</q> and can be confusing. For example VoiceOver reads it as <q>dimmed collapsed on top, horizontal separator</q>, Windows Narrator reads it as <q>end of line</q>. A better option is to replace <code>%1</code> with <code>%2</code> and use CSS for styling. Alternatively, <code>aria-hidden='true'</code> or <code>role='presentation'</code> can be applied to the <code>%3</code> element.";
   var incorrect_technique_for_hiding_content_report_message = "CSS technique <code>text-indent: %0 </code> is used to hide text. However, it causes problems for right-to-left language and also keep focus for screen reader outside of visible area.";
   var invalid_attribute_dir_value_report_message = "Attribute <code>dir</code> has invalid value <code>%0</code>.";
@@ -13187,8 +13185,6 @@
   	flash_content_report_message: flash_content_report_message,
   	h1_must_report_message: h1_must_report_message,
   	headings_sibling_unique_report_message: headings_sibling_unique_report_message,
-  	hidden_content_report_message1: hidden_content_report_message1,
-  	hidden_content_report_message2: hidden_content_report_message2,
   	horizontal_rule_report_message: horizontal_rule_report_message,
   	incorrect_technique_for_hiding_content_report_message: incorrect_technique_for_hiding_content_report_message,
   	invalid_attribute_dir_value_report_message: invalid_attribute_dir_value_report_message,
@@ -18471,41 +18467,6 @@
       }
   }
 
-  class HiddenContent extends AbstractRule {
-      constructor() {
-          super(...arguments);
-          this.selector = ':root, [aria-expanded]';
-          this.ruleConfig = {
-              id: TextUtility.convertUnderscoresToDashes($accessibilityAuditRules.hidden_content),
-              links: [],
-              recommendations: [],
-              severity: $severity.info,
-              type: CATEGORY_TYPE.BEST_PRACTICE
-          };
-      }
-      validate(elements) {
-          const reportNode = (element) => {
-              let report;
-              if (element.getAttribute('aria-expanded') === null) {
-                  report = {
-                      message: TranslateService.instant('hidden_content_report_message1'),
-                      node: element,
-                      ruleId: this.ruleConfig.id
-                  };
-                  this.validator.report(report);
-                  return;
-              }
-              report = {
-                  message: TranslateService.instant('hidden_content_report_message2'),
-                  node: element,
-                  ruleId: this.ruleConfig.id
-              };
-              this.validator.report(report);
-          };
-          elements.forEach(reportNode);
-      }
-  }
-
   class MeaningfulContentSequence extends AbstractRule {
       constructor() {
           super(...arguments);
@@ -22334,7 +22295,6 @@
               new Overlay(),
               new AudioVideoCaptions(),
               new VideoAudioDescriptions(),
-              new HiddenContent(),
               new MeaningfulContentSequence(),
               new TableRowAndColumnHeaders(),
               new TitleiFrame(),
