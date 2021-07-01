@@ -10,6 +10,11 @@ describe('Rules', () => {
       expect(HorizontalRule).toBeDefined();
     });
 
+    const selector: string = `hr${[
+      ':not([aria-hidden="true"])',
+      ':not([role="presentation"])'
+    ].join('')}`;
+
     let fakeDom;
 
     new HorizontalRule().registerValidator();
@@ -28,8 +33,8 @@ describe('Rules', () => {
     });
 
     it('should return one report when there is an element with hr', () => {
-      fakeDom.innerHTML = '<p>Text 1</p><hr><p>Text 2</p>';
-      const nodes: HTMLHRElement[] = DomUtility.querySelectorAllExclude('hr', fakeDom) as HTMLHRElement[];
+      fakeDom.innerHTML = '<p>Text 1</p><hr/><p>Text 2</p>';
+      const nodes: HTMLHRElement[] = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLHRElement[];
 
       new HorizontalRule().validate(nodes);
 
@@ -41,7 +46,16 @@ describe('Rules', () => {
 
     it('should return no reports when there is no elements with hr', () => {
       fakeDom.innerHTML = '<p>Text 1</p>hr<p>Text 2</p>';
-      const nodes: HTMLHRElement[] = DomUtility.querySelectorAllExclude('hr', fakeDom) as HTMLHRElement[];
+      const nodes: HTMLHRElement[] = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLHRElement[];
+
+      new HorizontalRule().validate(nodes);
+
+      expect(Object.keys(Validator.getReports()).length).toBe(0);
+    });
+
+    it('should return no reports when there is an element hr, but with attribue aria-hidden="true" or role="presentation"', () => {
+      fakeDom.innerHTML = '<p>Text 1</p><hr aria-hidden="true"/><hr role="presentation"/><p>Text 2</p>';
+      const nodes: HTMLHRElement[] = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLHRElement[];
 
       new HorizontalRule().validate(nodes);
 

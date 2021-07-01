@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.35";
+  var version = "0.0.36";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -14785,7 +14785,10 @@
   class HorizontalRule extends AbstractRule {
       constructor() {
           super(...arguments);
-          this.selector = 'hr';
+          this.selector = `hr${[
+            ':not([aria-hidden="true"])',
+            ':not([role="presentation"])'
+        ].join('')}`;
           this.ruleConfig = {
               id: TextUtility.convertUnderscoresToDashes($accessibilityAuditRules.horizontal_rule),
               links: [],
