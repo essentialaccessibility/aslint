@@ -1,7 +1,7 @@
 {
   "name": "@essentialaccessibility/aslint",
   "description": "Accessibility testing tool",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "license": "MPL-2.0",
   "author": {
     "name": "eSSENTIAL Accessibility"
