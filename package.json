@@ -43,8 +43,8 @@
   "devDependencies": {
     "@types/jest": "26.0.23",
     "@types/node": "16.0.0",
-    "@typescript-eslint/eslint-plugin": "4.28.1",
-    "@typescript-eslint/parser": "4.28.1",
+    "@typescript-eslint/eslint-plugin": "4.28.2",
+    "@typescript-eslint/parser": "4.28.2",
     "chokidar-cli": "2.1.0",
     "compressing": "1.5.1",
     "copyfiles": "2.4.1",
