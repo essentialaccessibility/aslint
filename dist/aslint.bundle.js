@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.38";
+  var version = "0.0.39";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -22200,6 +22200,9 @@
                   url = null;
               }
               if (url === null) {
+                  return;
+              }
+              if (url.hostname !== window.location.hostname || url.pathname !== window.location.pathname) {
                   return;
               }
               const hash = url.hash.split('#')[1];

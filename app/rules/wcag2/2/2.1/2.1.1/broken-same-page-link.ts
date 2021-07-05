@@ -36,6 +36,10 @@ export class BrokenSamePageLink extends AbstractRule {
         return;
       }
 
+      if (url.hostname !== window.location.hostname || url.pathname !== window.location.pathname) {
+        return;
+      }
+
       const hash: string | undefined = url.hash.split('#')[1];
 
       if (url.hash === '#' || typeof hash === 'string' && hash.length > 0 && document.getElementById(hash) === null) {
