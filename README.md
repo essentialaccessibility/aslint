@@ -177,6 +177,47 @@ Translations can be added in following steps:
 2. Modify file `app/services/translate.config.ts` to include language file content created in step #1.
 3. Modify Jest tests setup: `.jest/jest-setup.js`.
 
+## Understanding results
+
+### Rules
+
+The rule report is represented through following interface:
+
+    export interface IAslintRuleReport {
+      categories: string[];
+      issueType: string;
+      recommendations: string[];
+      resources: { content: string; url: string }[];
+      results: IAslintRuleReportResult[];
+      severity: string;
+      status?: IAslintRuleReportStatus;
+      totalElementsEvaluated: number;
+    }
+
+**`categories`** - the rule might belong to multiple categories. Following categories are used in built-in rules by default:
+
+    export enum IssueCategory {
+      adaptable = 'adaptable',
+      aria = 'aria',
+      audio = 'audio',
+      captcha = 'captcha',
+      distinguishable = 'distinguishable',
+      embedded_objects = 'embedded_objects',
+      forms = 'forms',
+      headings = 'headings',
+      images = 'images',
+      links = 'links',
+      operable = 'operable',
+      perceivable = 'perceivable',
+      robust = 'robust',
+      tables = 'tables',
+      uncategorized = 'uncategorized',
+      understandable = 'understandable',
+      videos = 'videos'
+    }
+
+**Note**: when you don't set `categories` on your custom rule then the `categories` will contain an empty array.
+
 ## Frequently Asked Questions
 
 Please refer to https://www.aslint.org/faq
