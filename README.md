@@ -218,6 +218,23 @@ The rule report is represented through following interface:
 
 **Note**: when you don't set `categories` on your custom rule then the `categories` will contain an empty array.
 
+**`issueType`** - there are 3 issue types: `error`, `warning`, `passed`. The issue type is determined based on the severity level. Let's see how it looks using "programming" language approach:
+
+      case critical:
+        return error;
+
+      case high:
+        return error;
+
+      case low:
+        return error;
+
+      case info:
+        return warning;
+
+      default:
+        return passed;
+
 ## Frequently Asked Questions
 
 Please refer to https://www.aslint.org/faq
