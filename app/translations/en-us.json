@@ -578,7 +578,7 @@
   },
   "aria_labelledby_association_report_message_1": {
     "comment": "Add comment",
-    "value": "Expected to find element with attribute <code>id=\"%0\"</code> for element <code>%1</code>"
+    "value": "Elements with an attribute <code>id</code>s: <code>%0/code> defined in <code>aria-labelledby=\"%1\"</code> does not exists."
   },
   "aria_labelledby_association_report_message_2": {
     "comment": "Add comment",

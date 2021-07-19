@@ -39,6 +39,18 @@ describe('Rules', () => {
       expect(Validator.getReport('report_0').ruleId).toBe('overlay');
     });
 
+    it('should return 1 report when there is one known Overlay detected inside HTML', () => {
+      fakeDom.innerHTML = '<div data-src="https://cdn.userway.org/widget.js"></div>';
+      const nodes = DomUtility.querySelectorAllExclude('script', fakeDom) as HTMLScriptElement[];
+
+      new Overlay().validate(nodes);
+
+      expect(Object.keys(Validator.getReports()).length).toBe(1);
+      expect(Validator.getReport('report_0').message).toBe('Accessibility overlay UserWay has been detected on the page. Overlays are third-party widgets that attempt to automatically fix the accessibility issues of page they are added to. Therefore the results from the scanning may not be accurate.');
+      expect(Validator.getReport('report_0').node.nodeName.toLowerCase()).toBe('html');
+      expect(Validator.getReport('report_0').ruleId).toBe('overlay');
+    });
+
     it('should return reports for all known detected overlays', () => {
       let overlays: string = '';
 

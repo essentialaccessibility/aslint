@@ -24,7 +24,7 @@ describe('ClickVerb', () => {
 
   it('should return 2 reports when there are 2 elements with "Click here" and "Click me" text', () => {
     fakeDom.innerHTML = '<a href="test.html">Click here</a><div>Test</div><a href="test1.html">Click me</a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 
@@ -39,7 +39,7 @@ describe('ClickVerb', () => {
 
   it('should return one report when there is an element with "Click here" text', () => {
     fakeDom.innerHTML = '<a href="test.html">Click here</a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 
@@ -51,7 +51,7 @@ describe('ClickVerb', () => {
 
   it('should return one report when there is an element with "   Click   " text', () => {
     fakeDom.innerHTML = '<a href="test.html">   Click   </a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 
@@ -63,7 +63,7 @@ describe('ClickVerb', () => {
 
   it('should return one report when there is an element with "Click me" text', () => {
     fakeDom.innerHTML = '<a href="test.html">Click me</a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 
@@ -75,7 +75,7 @@ describe('ClickVerb', () => {
 
   it('should return no report when there is an element with "doubleclick" text', () => {
     fakeDom.innerHTML = '<a href="test.html">doubleclick</a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 
@@ -84,7 +84,7 @@ describe('ClickVerb', () => {
 
   it('should return no report when there is an element with "clickdouble" text', () => {
     fakeDom.innerHTML = '<a href="test.html">clickdouble</a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 
@@ -93,7 +93,7 @@ describe('ClickVerb', () => {
 
   it('should return no report when there is alt on input type="image"', () => {
     fakeDom.innerHTML = '<a href="test.html"></a>';
-    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+    const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom) as HTMLAnchorElement[];
 
     new ClickVerb().validate(nodes);
 

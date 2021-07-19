@@ -3,8 +3,7 @@ import { CATEGORY_TYPE } from '../../../../../constants/categoryType';
 import { IIssueReport } from '../../../../../interfaces/rule-issue.interface';
 import { TextUtility } from '../../../../../utils/text';
 import { TranslateService } from '../../../../../services/translate';
-import { $severity } from '../../../../../constants/accessibility';
-import { $accessibilityAuditRules } from '../../../../../constants/accessibility';
+import { $accessibilityAuditRules, $severity } from '../../../../../constants/accessibility';
 import { AbstractRule, IAbstractRuleConfig } from '../../../../abstract-rule';
 
 export class AriaLabelledbyAssociation extends AbstractRule {
@@ -27,23 +26,15 @@ export class AriaLabelledbyAssociation extends AbstractRule {
   };
 
   public validate(elements: Element[]): void {
+
     const processNodes = (element: Element): void => {
       const idReferences: string | null = element.getAttribute('aria-labelledby');
       let ids: string[];
       let report: IIssueReport;
+      let missingElements: string[];
 
-      const isElementExists = (id: any): void => {
-        const refNode: HTMLElement | null = document.getElementById(id);
-
-        if (refNode !== null) {
-          return;
-        }
-
-        report = {
-          message: TranslateService.instant('aria_labelledby_association_report_message_1', [id, DomUtility.getEscapedOuterHTML(element)]),
-          node: element,
-          ruleId: this.ruleConfig.id
-        };
+      const checkElementAvailability = (id: string): boolean => {
+        return document.getElementById(id) === null;
       };
 
       if (typeof idReferences === 'string') {
@@ -57,7 +48,18 @@ export class AriaLabelledbyAssociation extends AbstractRule {
           this.validator.report(report);
         } else {
           ids = idReferences.split(/ +/).map(Function.prototype.call, String.prototype.trim);
-          ids.forEach(isElementExists);
+
+          missingElements = ids.filter(checkElementAvailability);
+
+          if (missingElements.length > 0) {
+            report = {
+              message: TranslateService.instant('aria_labelledby_association_report_message_1', [missingElements.join(', '), idReferences]),
+              node: element,
+              ruleId: this.ruleConfig.id
+            };
+
+            this.validator.report(report);
+          }
         }
       }
     };

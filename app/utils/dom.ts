@@ -17,6 +17,10 @@ export class DomUtility {
     return element.nodeName.toUpperCase() in NATIVELY_DISABLEABLE;
   }
 
+  public static getBodyElement(): HTMLElement | HTMLCollectionOf<HTMLBodyElement> {
+    return document.body ? document.body : document.getElementsByTagName('body')[0];
+  }
+
   public static getSelectedOption(select: HTMLSelectElement): any {
     const options: HTMLOptionsCollection = select.options;
     const len: number = options.length - 1;
@@ -164,28 +168,31 @@ export class DomUtility {
       return false;
     }
 
-    return !DomUtility.testRegExp(DomUtility.nonSpaceRe, str);
+    return DomUtility.testRegExp(DomUtility.nonSpaceRe, str) === false;
   }
 
   public static isWhitespaceText(node: Node): boolean {
     return node.nodeType === NODE_TYPE.TEXT_NODE && DomUtility.isWhitespace(node.nodeValue);
   }
 
-  public static getBodyElement(): HTMLElement | HTMLCollectionOf<HTMLBodyElement> {
-    return document.body ? document.body : document.getElementsByTagName('body')[0];
+  public static textContainsOnlyWhiteSpaces(str: string): boolean {
+    return (/^\s*$/).test(str);
+  }
+
+  public static hasNonWhitespacesContent(element: HTMLElement): boolean {
+    const text: string | null = element.textContent;
+
+    return typeof text === 'string' ? this.textContainsOnlyWhiteSpaces(text) : false;
   }
 
   public static isEmptyElement(element: Node): boolean {
-    let node: ChildNode | null = element.firstChild;
+    const excludeCommentNodes = (node: ChildNode): boolean => {
+      return node.nodeType !== NODE_TYPE.COMMENT_NODE;
+    };
 
-    while (node) {
-      if (DomUtility.isWhitespaceText(node) === false) {
-        return false;
-      }
-      node = node.nextSibling;
-    }
+    const nonCommentChildNodes: ChildNode[] = Array.from(element.childNodes).filter(excludeCommentNodes);
 
-    return true;
+    return nonCommentChildNodes.length === 0;
   }
 
   public static getParentElement(element: HTMLElement, nodeName: string): HTMLElement | null {
@@ -410,23 +417,23 @@ export class DomUtility {
     return '';
   }
 
-  public static getEscapedOuterTruncatedHTML(element: Element | null): string {
-    if (element) {
-      const tags: string[] = DomUtility.getOuterHTML(element).split('>');
-      let html: string = '';
-
-      if (tags.length === 3) {
-        // <tag></tag>
-        html = `${tags[0]}>${TextUtility.truncateInTheMiddle(element.innerHTML)}${tags[1]}>`;
-      } else if (tags.length === 2) {
-        // <tag/>
-        html = TextUtility.truncateInTheMiddle(element.outerHTML);
-      }
-
-      return TextUtility.escape(html);
+  public static getEscapedOuterTruncatedHTML(element: Context | null): string {
+    if (element === null || ('innerHTML' in element === false) && ('outerHTML' in element === false)) {
+      return '';
     }
 
-    return '';
+    const tags: string[] = DomUtility.getOuterHTML(element).split('>');
+    let html: string = '';
+
+    if (tags.length === 3) {
+      // <tag></tag>
+      html = `${tags[0]}>${TextUtility.truncateInTheMiddle((element as Element).innerHTML)}${tags[1]}>`;
+    } else if (tags.length === 2) {
+      // <tag/>
+      html = TextUtility.truncateInTheMiddle((element as Element).outerHTML);
+    }
+
+    return TextUtility.escape(html);
   }
 
   public static nodesToText(node: Node): string {
@@ -1040,4 +1047,5 @@ export class DomUtility {
       nodesNum: nodesNum
     };
   }
+
 }

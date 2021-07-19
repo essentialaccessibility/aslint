@@ -1,6 +1,7 @@
 import {
   $accessibilityAuditRules, $auditRuleNodeSkipReason, $auditRuleSkipReason, IssueCategory
 } from '../constants/accessibility';
+import { Context } from './context.interface';
 
 export enum IAslintRuleReportStatusType {
   error = 'error',
@@ -55,7 +56,7 @@ export interface IAslintRuleReportStatus {
 export interface IAslintRuleReportResult {
   element: {
     html: string;
-    reference: Element | null;
+    reference: Context | null;
     xpath: string;
   };
   message: {

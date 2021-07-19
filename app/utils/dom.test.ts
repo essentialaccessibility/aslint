@@ -147,19 +147,29 @@ describe('Utils', () => {
 
     describe('#isEmptyElement', () => {
 
-      it('should return true if node is empty', () => {
+      it('should determine that element is empty (does not contains any nodes, except comment nodes)', () => {
 
         fakeDom.innerHTML = '<p></p>';
         expect(DomUtility.isEmptyElement(fakeDom.querySelector('p'))).toBeTruthy();
       });
 
-      it('should return true if node contains only spaces', () => {
+      it('should determine that element contains only comments and therefore is empty', () => {
 
-        fakeDom.innerHTML = '<p>    </p>';
-        expect(DomUtility.isEmptyElement(fakeDom.querySelector('p'))).toBeTruthy();
+        fakeDom.innerHTML = '<p></p>';
+
+        const p = fakeDom.querySelector('p');
+
+        const commentNode: Comment = document.createComment('This is a comment');
+
+        p.appendChild(commentNode);
+
+        expect(DomUtility.isEmptyElement(p)).toBeTruthy();
       });
 
-      it('should return false if node contains any other node than text node', () => {
+      it('should determine that element contains content (including whitespaces)', () => {
+
+        fakeDom.innerHTML = '<p>    </p>';
+        expect(DomUtility.isEmptyElement(fakeDom.querySelector('p'))).toBeFalsy();
 
         fakeDom.innerHTML = '<p>    <span>test</span></p>';
         expect(DomUtility.isEmptyElement(fakeDom.querySelector('p'))).toBeFalsy();

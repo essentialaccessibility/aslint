@@ -147,7 +147,7 @@
   "empty_link_element_report_message_3": "Having only defined an attribute %0 is not sufficient and it is recommended to have the content instead, e.g. at least visually hidden, but exposed to assisitve technologies. Some users are disabling styles for better readability, and also description from attribute is not available for automatic translators.",
   "empty_link_element_additional_message": "The link has defined <code>aria-labelledby=\"%0\"</code>, but the associated elements with following ids <code>%1</code> does not exist.",
   "links_same_content_different_url_report_message": "There are anchor elements that have the same content, but different destination URLs.",
-  "aria_labelledby_association_report_message_1": "Expected to find element with attribute <code>id=\"%0\"</code> for element <code>%1</code>",
+  "aria_labelledby_association_report_message_1": "Elements with an attribute <code>id</code>s: <code>%0/code> defined in <code>aria-labelledby=\"%1\"</code> does not exists.",
   "aria_labelledby_association_report_message_2": "Expected attribute <code>aria-labelledby</code> not to be empty on element <code>%0</code>",
   "click_verb_report_message": "The verb <q>click</q> must not be used in a link. <q>Click</q> presupposes the use of a mouse, but some users will activate links via keyboard commands (i.e. <kbd>Enter</kbd>) and/or other assistive technologies.",
   "empty_heading_report_message": "Heading element should not have an empty content.",

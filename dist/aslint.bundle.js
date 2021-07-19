@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.47";
+  var version = "0.0.49";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -2138,6 +2138,9 @@
       static isNativelyDisableable(element) {
           return element.nodeName.toUpperCase() in NATIVELY_DISABLEABLE;
       }
+      static getBodyElement() {
+          return document.body ? document.body : document.getElementsByTagName('body')[0];
+      }
       static getSelectedOption(select) {
           const options = select.options;
           const len = options.length - 1;
@@ -2247,23 +2250,24 @@
               console.warn(`[DomUtility.isWhitespace] Invalid str type (got: ${typeof str})`);
               return false;
           }
-          return !DomUtility.testRegExp(DomUtility.nonSpaceRe, str);
+          return DomUtility.testRegExp(DomUtility.nonSpaceRe, str) === false;
       }
       static isWhitespaceText(node) {
           return node.nodeType === NODE_TYPE.TEXT_NODE && DomUtility.isWhitespace(node.nodeValue);
       }
-      static getBodyElement() {
-          return document.body ? document.body : document.getElementsByTagName('body')[0];
+      static textContainsOnlyWhiteSpaces(str) {
+          return (/^\s*$/).test(str);
+      }
+      static hasNonWhitespacesContent(element) {
+          const text = element.textContent;
+          return typeof text === 'string' ? this.textContainsOnlyWhiteSpaces(text) : false;
       }
       static isEmptyElement(element) {
-          let node = element.firstChild;
-          while (node) {
-              if (DomUtility.isWhitespaceText(node) === false) {
-                  return false;
-              }
-              node = node.nextSibling;
-          }
-          return true;
+          const excludeCommentNodes = (node) => {
+              return node.nodeType !== NODE_TYPE.COMMENT_NODE;
+          };
+          const nonCommentChildNodes = Array.from(element.childNodes).filter(excludeCommentNodes);
+          return nonCommentChildNodes.length === 0;
       }
       static getParentElement(element, nodeName) {
           let parent = element;
@@ -2427,18 +2431,18 @@
           return '';
       }
       static getEscapedOuterTruncatedHTML(element) {
-          if (element) {
-              const tags = DomUtility.getOuterHTML(element).split('>');
-              let html = '';
-              if (tags.length === 3) {
-                  html = `${tags[0]}>${TextUtility.truncateInTheMiddle(element.innerHTML)}${tags[1]}>`;
-              }
-              else if (tags.length === 2) {
-                  html = TextUtility.truncateInTheMiddle(element.outerHTML);
-              }
-              return TextUtility.escape(html);
+          if (element === null || ('innerHTML' in element === false) && ('outerHTML' in element === false)) {
+              return '';
           }
-          return '';
+          const tags = DomUtility.getOuterHTML(element).split('>');
+          let html = '';
+          if (tags.length === 3) {
+              html = `${tags[0]}>${TextUtility.truncateInTheMiddle(element.innerHTML)}${tags[1]}>`;
+          }
+          else if (tags.length === 2) {
+              html = TextUtility.truncateInTheMiddle(element.outerHTML);
+          }
+          return TextUtility.escape(html);
       }
       static nodesToText(node) {
           if (node.childNodes.length > 0) {
@@ -13116,7 +13120,7 @@
   var empty_link_element_report_message_3 = "Having only defined an attribute %0 is not sufficient and it is recommended to have the content instead, e.g. at least visually hidden, but exposed to assisitve technologies. Some users are disabling styles for better readability, and also description from attribute is not available for automatic translators.";
   var empty_link_element_additional_message = "The link has defined <code>aria-labelledby=\"%0\"</code>, but the associated elements with following ids <code>%1</code> does not exist.";
   var links_same_content_different_url_report_message = "There are anchor elements that have the same content, but different destination URLs.";
-  var aria_labelledby_association_report_message_1 = "Expected to find element with attribute <code>id=\"%0\"</code> for element <code>%1</code>";
+  var aria_labelledby_association_report_message_1 = "Elements with an attribute <code>id</code>s: <code>%0/code> defined in <code>aria-labelledby=\"%1\"</code> does not exists.";
   var aria_labelledby_association_report_message_2 = "Expected attribute <code>aria-labelledby</code> not to be empty on element <code>%0</code>";
   var click_verb_report_message = "The verb <q>click</q> must not be used in a link. <q>Click</q> presupposes the use of a mouse, but some users will activate links via keyboard commands (i.e. <kbd>Enter</kbd>) and/or other assistive technologies.";
   var empty_heading_report_message = "Heading element should not have an empty content.";
@@ -20883,16 +20887,9 @@
               const idReferences = element.getAttribute('aria-labelledby');
               let ids;
               let report;
-              const isElementExists = (id) => {
-                  const refNode = document.getElementById(id);
-                  if (refNode !== null) {
-                      return;
-                  }
-                  report = {
-                      message: TranslateService.instant('aria_labelledby_association_report_message_1', [id, DomUtility.getEscapedOuterHTML(element)]),
-                      node: element,
-                      ruleId: this.ruleConfig.id
-                  };
+              let missingElements;
+              const checkElementAvailability = (id) => {
+                  return document.getElementById(id) === null;
               };
               if (typeof idReferences === 'string') {
                   if (idReferences.trim().length === 0) {
@@ -20905,7 +20902,15 @@
                   }
                   else {
                       ids = idReferences.split(/ +/).map(Function.prototype.call, String.prototype.trim);
-                      ids.forEach(isElementExists);
+                      missingElements = ids.filter(checkElementAvailability);
+                      if (missingElements.length > 0) {
+                          report = {
+                              message: TranslateService.instant('aria_labelledby_association_report_message_1', [missingElements.join(', '), idReferences]),
+                              node: element,
+                              ruleId: this.ruleConfig.id
+                          };
+                          this.validator.report(report);
+                      }
                   }
               }
           };
@@ -21668,38 +21673,61 @@
           };
       }
       validate(scripts) {
-          const overlay = {
-              AccessiBe: ['acsbap.com', 'acsbapp.com'],
-              AudioEye: ['audioeye.com'],
-              EqualWeb: ['nagich.com', 'nagich.co.il'],
-              MaxAccess: ['maxaccess.io'],
-              TruAbilities: ['truabilities.com'],
-              User1st: ['user1st.info'],
-              UserWay: ['userway.org']
+          let foundedInScripts = false;
+          const findByScripts = (_overlayEntries) => {
+              const findOverlay = (script) => {
+                  let url;
+                  if (script.src.length === 0) {
+                      return;
+                  }
+                  try {
+                      url = new URL(script.src);
+                  }
+                  catch (_) {
+                      url = null;
+                  }
+                  if (url === null) {
+                      return;
+                  }
+                  const hostname = url.hostname;
+                  const foundedOverlays = new Map();
+                  for (const [overlayName, overlayUrls] of _overlayEntries) {
+                      for (const overlayUrl of overlayUrls) {
+                          if (hostname.includes(overlayUrl)) {
+                              foundedOverlays.set(overlayName, null);
+                          }
+                      }
+                  }
+                  if (Array.from(foundedOverlays).length === 0) {
+                      return;
+                  }
+                  const reportMessage = TranslateService.instant('overlay_report_message', Array.from(foundedOverlays.keys()).join(', '));
+                  const report = {
+                      message: reportMessage,
+                      node: script,
+                      ruleId: this.ruleConfig.id
+                  };
+                  this.validator.report(report);
+                  foundedInScripts = true;
+              };
+              scripts.forEach(findOverlay);
           };
-          const overlayEntries = Object.entries(overlay);
-          if (scripts.length === 0) {
-              return;
-          }
-          const findOverlay = (script) => {
-              let url;
-              if (script.src.length === 0) {
+          const findThroughHtml = (_overlayEntries) => {
+              const context = this.context;
+              let html = '';
+              if (typeof context.innerHTML === 'string') {
+                  html = context.innerHTML;
+              }
+              else if (context.outerHTML === 'string') {
+                  html = context.outerHTML;
+              }
+              if (html.trim().length === 0) {
                   return;
               }
-              try {
-                  url = new URL(script.src);
-              }
-              catch (_) {
-                  url = null;
-              }
-              if (url === null) {
-                  return;
-              }
-              const hostname = url.hostname;
               const foundedOverlays = new Map();
-              for (const [overlayName, overlayUrls] of overlayEntries) {
+              for (const [overlayName, overlayUrls] of _overlayEntries) {
                   for (const overlayUrl of overlayUrls) {
-                      if (hostname.includes(overlayUrl)) {
+                      if (html.includes(overlayUrl)) {
                           foundedOverlays.set(overlayName, null);
                       }
                   }
@@ -21710,12 +21738,27 @@
               const reportMessage = TranslateService.instant('overlay_report_message', Array.from(foundedOverlays.keys()).join(', '));
               const report = {
                   message: reportMessage,
-                  node: script,
+                  node: context,
                   ruleId: this.ruleConfig.id
               };
               this.validator.report(report);
           };
-          scripts.forEach(findOverlay);
+          const overlay = {
+              AccessiBe: ['acsbap.com', 'acsbapp.com'],
+              AudioEye: ['audioeye.com'],
+              EqualWeb: ['nagich.com', 'nagich.co.il'],
+              MaxAccess: ['maxaccess.io'],
+              TruAbilities: ['truabilities.com'],
+              User1st: ['user1st.info'],
+              UserWay: ['userway.org']
+          };
+          const overlayEntries = Object.entries(overlay);
+          if (scripts.length > 0) {
+              findByScripts(overlayEntries);
+          }
+          if (foundedInScripts === false) {
+              findThroughHtml(overlayEntries);
+          }
       }
   }
 
