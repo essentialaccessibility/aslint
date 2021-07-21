@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.49";
+  var version = "0.0.50";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -3006,6 +3006,7 @@
       $accessibilityAuditRules["aria_describedby_association"] = "aria_describedby_association";
       $accessibilityAuditRules["aria_hidden_false"] = "aria_hidden_false";
       $accessibilityAuditRules["aria_labelledby_association"] = "aria_labelledby_association";
+      $accessibilityAuditRules["aria_labelledby_association_empty_element"] = "aria_labelledby_association_empty_element";
       $accessibilityAuditRules["aria_role_dialog"] = "aria_role_dialog";
       $accessibilityAuditRules["audio_alternative"] = "audio_alternative";
       $accessibilityAuditRules["audio_video_captions"] = "audio_video_captions";
@@ -11310,6 +11311,27 @@
               }],
           title: ''
       },
+      [$accessibilityAuditRules.aria_labelledby_association_empty_element]: {
+          categories: [IssueCategory.aria],
+          description: '',
+          isMarkedAsFalsePositive: false,
+          isSelectedForScanning: true,
+          resources: [],
+          ruleId: $accessibilityAuditRules.aria_labelledby_association_empty_element,
+          severity: $severity.critical,
+          standards: [
+              {
+                  description: 'Understanding Success Criterion 2.4.4: Link Purpose (In Context)',
+                  id: AuditStandards.wcag,
+                  url: 'https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context.html',
+                  [AuditStandards.wcag]: Wcag.getSuccessCriteria('2.4.4')
+              }
+          ],
+          techniques: [{
+                  id: '', link: '', standard: AuditStandards.wcag
+              }],
+          title: ''
+      },
       [$accessibilityAuditRules.click_verb]: {
           categories: [IssueCategory.operable],
           description: '',
@@ -13122,6 +13144,7 @@
   var links_same_content_different_url_report_message = "There are anchor elements that have the same content, but different destination URLs.";
   var aria_labelledby_association_report_message_1 = "Elements with an attribute <code>id</code>s: <code>%0/code> defined in <code>aria-labelledby=\"%1\"</code> does not exists.";
   var aria_labelledby_association_report_message_2 = "Expected attribute <code>aria-labelledby</code> not to be empty on element <code>%0</code>";
+  var aria_labelledby_association_empty_element_report_message_1 = "Elements with an attribute <code>id</code>s: <code>%0/code> defined in <code>aria-labelledby=\"%1\"</code> exists, but they are empty. They should not be an empty.";
   var click_verb_report_message = "The verb <q>click</q> must not be used in a link. <q>Click</q> presupposes the use of a mouse, but some users will activate links via keyboard commands (i.e. <kbd>Enter</kbd>) and/or other assistive technologies.";
   var empty_heading_report_message = "Heading element should not have an empty content.";
   var no_headings_report_message = "You have no defined headings <code>h1-h6</code>.";
@@ -13313,6 +13336,7 @@
   	links_same_content_different_url_report_message: links_same_content_different_url_report_message,
   	aria_labelledby_association_report_message_1: aria_labelledby_association_report_message_1,
   	aria_labelledby_association_report_message_2: aria_labelledby_association_report_message_2,
+  	aria_labelledby_association_empty_element_report_message_1: aria_labelledby_association_empty_element_report_message_1,
   	click_verb_report_message: click_verb_report_message,
   	empty_heading_report_message: empty_heading_report_message,
   	no_headings_report_message: no_headings_report_message,
@@ -22262,6 +22286,63 @@
       }
   }
 
+  class AriaLabelledbyAssociationEmptyElement extends AbstractRule {
+      constructor() {
+          super(...arguments);
+          this.selector = '[aria-labelledby]';
+          this.ruleConfig = {
+              id: TextUtility.convertUnderscoresToDashes($accessibilityAuditRules.aria_labelledby_association_empty_element),
+              links: [
+                  {
+                      content: '2.4.4 Link Purpose (In Context)',
+                      url: 'https://www.w3.org/TR/2008/REC-WCAG20-20081211/#navigation-mechanisms-refs'
+                  },
+                  {
+                      content: 'ARIA7: Using aria-labelledby for link purpose',
+                      url: 'https://www.w3.org/TR/WCAG20-TECHS/ARIA7.html'
+                  }
+              ],
+              recommendations: [],
+              severity: $severity.critical,
+              type: CATEGORY_TYPE.WCAG_A
+          };
+      }
+      validate(elements) {
+          const processNodes = (element) => {
+              const idReferences = element.getAttribute('aria-labelledby');
+              let ids;
+              let report;
+              const emptyElements = [];
+              const checkElementAvailability = (id) => {
+                  const refNode = document.getElementById(id);
+                  if (refNode === null) {
+                      return;
+                  }
+                  const text = refNode.textContent;
+                  if (DomUtility.isEmptyElement(refNode) || typeof text !== 'string' || DomUtility.textContainsOnlyWhiteSpaces(text)) {
+                      emptyElements.push(id);
+                  }
+              };
+              if (typeof idReferences === 'string') {
+                  if (idReferences.trim().length > 0) {
+                      ids = idReferences.split(/ +/).map(Function.prototype.call, String.prototype.trim);
+                      ids.forEach(checkElementAvailability);
+                      if (emptyElements.length === 0) {
+                          return;
+                      }
+                      report = {
+                          message: TranslateService.instant('aria_labelledby_association_empty_element_report_message_1', [emptyElements.join(', '), idReferences]),
+                          node: element,
+                          ruleId: this.ruleConfig.id
+                      };
+                      this.validator.report(report);
+                  }
+              }
+          };
+          elements.forEach(processNodes);
+      }
+  }
+
   class LoadRules {
       constructor() {
           this.defaultRuleInstances = [];
@@ -22367,6 +22448,7 @@
               new Animation(),
               new BlinkElement(),
               new AriaLabelledbyAssociation(),
+              new AriaLabelledbyAssociationEmptyElement(),
               new ClickVerb(),
               new NoHeadings(),
               new FontStyleItalic(),

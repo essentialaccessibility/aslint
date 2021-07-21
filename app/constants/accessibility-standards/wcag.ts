@@ -1190,6 +1190,27 @@ export const wcag: Partial<Record<$accessibilityAuditRules, IAuditRule>> = {
     }],
     title: ''
   },
+  [$accessibilityAuditRules.aria_labelledby_association_empty_element]: {
+    categories: [IssueCategory.aria],
+    description: '',
+    isMarkedAsFalsePositive: false,
+    isSelectedForScanning: true,
+    resources: [],
+    ruleId: $accessibilityAuditRules.aria_labelledby_association_empty_element,
+    severity: $severity.critical,
+    standards: [
+      {
+        description: 'Understanding Success Criterion 2.4.4: Link Purpose (In Context)',
+        id: AuditStandards.wcag,
+        url: 'https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context.html',
+        [AuditStandards.wcag]: Wcag.getSuccessCriteria('2.4.4')
+      }
+    ],
+    techniques: [{
+      id: '', link: '', standard: AuditStandards.wcag
+    }],
+    title: ''
+  },
   [$accessibilityAuditRules.click_verb]: {
     categories: [IssueCategory.operable],
     description: '',

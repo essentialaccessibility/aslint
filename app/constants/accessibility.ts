@@ -36,6 +36,7 @@ export enum $accessibilityAuditRules {
   aria_describedby_association = 'aria_describedby_association',
   aria_hidden_false = 'aria_hidden_false',
   aria_labelledby_association = 'aria_labelledby_association',
+  aria_labelledby_association_empty_element = 'aria_labelledby_association_empty_element',
   aria_role_dialog = 'aria_role_dialog',
   audio_alternative = 'audio_alternative',
   audio_video_captions = 'audio_video_captions',

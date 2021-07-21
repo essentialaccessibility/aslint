@@ -584,6 +584,10 @@
     "comment": "Add comment",
     "value": "Expected attribute <code>aria-labelledby</code> not to be empty on element <code>%0</code>"
   },
+  "aria_labelledby_association_empty_element_report_message_1": {
+    "comment": "Add comment",
+    "value": "Elements with an attribute <code>id</code>s: <code>%0/code> defined in <code>aria-labelledby=\"%1\"</code> exists, but they are empty. They should not be an empty."
+  },
   "click_verb_report_message": {
     "comment": "Add comment",
     "value": "The verb <q>click</q> must not be used in a link. <q>Click</q> presupposes the use of a mouse, but some users will activate links via keyboard commands (i.e. <kbd>Enter</kbd>) and/or other assistive technologies."

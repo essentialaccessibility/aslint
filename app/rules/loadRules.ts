@@ -113,6 +113,7 @@ import { IAuditRule } from '../interfaces/audit-rule.interface';
 import { ObjectUtility } from '../utils/object';
 import { EmptyButtonDescription } from './wcag2/4/4.1/4.1.2/H91/empty-button-description';
 import { BrokenSamePageLink } from './wcag2/2/2.1/2.1.1/broken-same-page-link';
+import { AriaLabelledbyAssociationEmptyElement } from './wcag2/2/2.4/2.4.4/aria-labelledby-association-empty-element';
 
 export class LoadRules {
   private defaultRuleInstances: AbstractRule[];
@@ -224,6 +225,7 @@ export class LoadRules {
       new Animation(),
       new BlinkElement(),
       new AriaLabelledbyAssociation(),
+      new AriaLabelledbyAssociationEmptyElement(),
       new ClickVerb(),
       new NoHeadings(),
       new FontStyleItalic(),
