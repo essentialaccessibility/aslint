@@ -54,6 +54,10 @@ ASLint can be run using Promises as well as passing [callback](#https://develope
         console.log('[ASLint] All tests passed.', results);
       });
 
+### Global properties
+
+`version` - to check what's the version of ASLint simply get value from `aslint.version` (type: string).
+
 ### Config Options
 
 `context` - (type: string, params: CSS Selector or XPath). Limit scanning within the document that matches the specified selector. **Default**: `document.documentElement`
