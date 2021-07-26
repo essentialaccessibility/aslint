@@ -20,6 +20,7 @@ const rightReg: RegExp = new RegExp(`[${ALL_SPACES}]+$`);
 const zeroReg: RegExp = new RegExp(`[${ZERO_WIDTH_SPACE}]+`, 'g');
 const otherReg: RegExp = new RegExp(`[${OTHER_SPACE}]+`, 'g');
 const space: RegExp = new RegExp(`^[${SP+TAB+LF+FF+CR}]+$`);
+const allWhiteSpaces: RegExp = new RegExp(`[${TAB + CR + LF + CR_LF + ZERO_WIDTH_SPACE + OTHER_SPACE}]`, 'g');
 
 export class TextUtility {
   private static isNativeTrimAvailable: boolean = String.prototype.trim && ObjectUtility.isNativeMethod(String.prototype.trim);
@@ -119,6 +120,11 @@ export class TextUtility {
       .replace(zeroReg, '')
       .replace(otherReg, '')
       .trim();
+  }
+
+  public static normalizeWhitespaces(string: string): string {
+    return string
+      .replace(allWhiteSpaces, ' ').replace(/\s+/g, ' ');
   }
 
   public static escape(str: string): string {

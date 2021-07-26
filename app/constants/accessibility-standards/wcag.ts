@@ -1358,6 +1358,27 @@ export const wcag: Partial<Record<$accessibilityAuditRules, IAuditRule>> = {
     }],
     title: ''
   },
+  [$accessibilityAuditRules.link_with_unclear_purpose]: {
+    categories: [IssueCategory.links],
+    description: '',
+    isMarkedAsFalsePositive: false,
+    isSelectedForScanning: true,
+    resources: [],
+    ruleId: $accessibilityAuditRules.link_with_unclear_purpose,
+    severity: $severity.high,
+    standards: [
+      {
+        description: '',
+        id: AuditStandards.wcag,
+        url: '',
+        [AuditStandards.wcag]: Wcag.getSuccessCriteria('2.4.9')
+      }
+    ],
+    techniques: [{
+      id: '', link: '', standard: AuditStandards.wcag
+    }],
+    title: ''
+  },
   [$accessibilityAuditRules.label_visually_hidden_only]: {
     categories: [IssueCategory.forms],
     description: '',

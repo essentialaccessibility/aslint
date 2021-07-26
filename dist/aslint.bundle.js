@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.52";
+  var version = "0.0.53";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -2025,6 +2025,7 @@
   const zeroReg = new RegExp(`[${ZERO_WIDTH_SPACE}]+`, 'g');
   const otherReg = new RegExp(`[${OTHER_SPACE}]+`, 'g');
   const space = new RegExp(`^[${SP + TAB + LF + FF + CR}]+$`);
+  const allWhiteSpaces = new RegExp(`[${TAB + CR + LF + CR_LF + ZERO_WIDTH_SPACE + OTHER_SPACE}]`, 'g');
   class TextUtility {
       static trim(text) {
           if (TextUtility.isNativeTrimAvailable) {
@@ -2083,6 +2084,10 @@
               .replace(zeroReg, '')
               .replace(otherReg, '')
               .trim();
+      }
+      static normalizeWhitespaces(string) {
+          return string
+              .replace(allWhiteSpaces, ' ').replace(/\s+/g, ' ');
       }
       static escape(str) {
           const fromEntityMap = (s) => {
@@ -11479,6 +11484,27 @@
               }],
           title: ''
       },
+      [$accessibilityAuditRules.link_with_unclear_purpose]: {
+          categories: [IssueCategory.links],
+          description: '',
+          isMarkedAsFalsePositive: false,
+          isSelectedForScanning: true,
+          resources: [],
+          ruleId: $accessibilityAuditRules.link_with_unclear_purpose,
+          severity: $severity.high,
+          standards: [
+              {
+                  description: '',
+                  id: AuditStandards.wcag,
+                  url: '',
+                  [AuditStandards.wcag]: Wcag.getSuccessCriteria('2.4.9')
+              }
+          ],
+          techniques: [{
+                  id: '', link: '', standard: AuditStandards.wcag
+              }],
+          title: ''
+      },
       [$accessibilityAuditRules.label_visually_hidden_only]: {
           categories: [IssueCategory.forms],
           description: '',
@@ -12154,29 +12180,6 @@
           isSelectedForScanning: true,
           resources: [],
           ruleId: $accessibilityAuditRules.label_duplicated_content_title,
-          severity: $severity.high,
-          standards: [
-              {
-                  description: '',
-                  id: AuditStandards.essential,
-                  url: '',
-                  [AuditStandards.essential]: {
-                      version: EssentialVersion.v10
-                  }
-              }
-          ],
-          techniques: [{
-                  id: '', link: '', standard: AuditStandards.essential
-              }],
-          title: ''
-      },
-      [$accessibilityAuditRules.link_with_unclear_purpose]: {
-          categories: [IssueCategory.links],
-          description: '',
-          isMarkedAsFalsePositive: false,
-          isSelectedForScanning: true,
-          resources: [],
-          ruleId: $accessibilityAuditRules.link_with_unclear_purpose,
           severity: $severity.high,
           standards: [
               {
@@ -15308,16 +15311,17 @@
               ],
               recommendations: [],
               severity: $severity.high,
-              type: CATEGORY_TYPE.BEST_PRACTICE
+              type: CATEGORY_TYPE.WCAG_AAA
           };
       }
       validate(elements) {
           const processNode = (element) => {
-              const text = DomUtility.getText(element, true)
+              let text = DomUtility.getText(element, true)
                   .toLowerCase();
               if (text.length === 0) {
                   return;
               }
+              text = TextUtility.normalizeWhitespaces(text);
               const index = UNCLEAR_LINK_PHRASES_ENGLISH.indexOf(text);
               if (index === -1) {
                   return;

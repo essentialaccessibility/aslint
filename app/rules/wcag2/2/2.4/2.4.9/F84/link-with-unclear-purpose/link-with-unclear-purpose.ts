@@ -1,12 +1,11 @@
-import { DomUtility } from '../../../utils/dom';
-import { CATEGORY_TYPE } from '../../../constants/categoryType';
-import { UNCLEAR_LINK_PHRASES_ENGLISH } from '../../../constants/unclearLinkPhrases';
-import { IIssueReport } from '../../../interfaces/rule-issue.interface';
-import { TextUtility } from '../../../utils/text';
-import { TranslateService } from '../../../services/translate';
-import { $severity } from '../../../constants/accessibility';
-import { $accessibilityAuditRules } from '../../../constants/accessibility';
-import { AbstractRule, IAbstractRuleConfig } from '../../abstract-rule';
+import { DomUtility } from '../../../../../../../utils/dom';
+import { CATEGORY_TYPE } from '../../../../../../../constants/categoryType';
+import { UNCLEAR_LINK_PHRASES_ENGLISH } from '../../../../../../../constants/unclearLinkPhrases';
+import { IIssueReport } from '../../../../../../../interfaces/rule-issue.interface';
+import { TextUtility } from '../../../../../../../utils/text';
+import { TranslateService } from '../../../../../../../services/translate';
+import { $accessibilityAuditRules, $severity } from '../../../../../../../constants/accessibility';
+import { AbstractRule, IAbstractRuleConfig } from '../../../../../../abstract-rule';
 
 export class LinkWithUnclearPurpose extends AbstractRule {
   protected selector: string = 'a:not(:empty)';
@@ -29,17 +28,19 @@ export class LinkWithUnclearPurpose extends AbstractRule {
     ],
     recommendations: [],
     severity: $severity.high,
-    type: CATEGORY_TYPE.BEST_PRACTICE
+    type: CATEGORY_TYPE.WCAG_AAA
   };
 
   public validate(elements: HTMLElement[]): void {
     const processNode = (element: HTMLElement): void => {
-      const text: string = DomUtility.getText(element, true)
+      let text: string = DomUtility.getText(element, true)
         .toLowerCase();
 
       if (text.length === 0) {
         return;
       }
+
+      text = TextUtility.normalizeWhitespaces(text);
 
       const index: number = UNCLEAR_LINK_PHRASES_ENGLISH.indexOf(text);
 

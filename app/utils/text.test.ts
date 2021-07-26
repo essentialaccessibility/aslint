@@ -163,8 +163,18 @@ describe('Utils', () => {
     });
 
     describe('#safeTrim', () => {
-      it('should trim all known white spaces', () => {
+      it('should trim all known whitespaces', () => {
         expect(TextUtility.safeTrim('\t\r\n\v\f\u200B\u200C\u200D\u200E\u200F\u000b\u2028\u2029\uFEFF\u202D\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000').length).toBe(0);
+      });
+    });
+
+    describe('#normalizeWhitespaces', () => {
+      it('should replace all new lines with a single white space', () => {
+        expect(TextUtility.normalizeWhitespaces('click\nhere')).toBe('click here');
+      });
+
+      it('should replace all known whitespaces with a single white space', () => {
+        expect(TextUtility.normalizeWhitespaces(`click\t\r\n\v\f\u200B\u200C\u200D\u200E\u200F\u000b\u2028\u2029\uFEFF\u202D\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000here`)).toBe('click here');
       });
     });
 

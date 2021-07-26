@@ -402,29 +402,6 @@ export const bestPractice: Partial<Record<$accessibilityAuditRules, IAuditRule>>
     }],
     title: ''
   },
-  [$accessibilityAuditRules.link_with_unclear_purpose]: {
-    categories: [IssueCategory.links],
-    description: '',
-    isMarkedAsFalsePositive: false,
-    isSelectedForScanning: true,
-    resources: [],
-    ruleId: $accessibilityAuditRules.link_with_unclear_purpose,
-    severity: $severity.high,
-    standards: [
-      {
-        description: '',
-        id: AuditStandards.essential,
-        url: '',
-        [AuditStandards.essential]: {
-          version: EssentialVersion.v10
-        }
-      }
-    ],
-    techniques: [{
-      id: '', link: '', standard: AuditStandards.essential
-    }],
-    title: ''
-  },
   [$accessibilityAuditRules.links_language_destination]: {
     categories: [IssueCategory.links],
     description: '',

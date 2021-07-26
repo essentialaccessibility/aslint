@@ -28,7 +28,7 @@ import { LabelInappropriateAssociation } from './wcag2/1/1.3/1.3.1/H44/label-ina
 import { LabelVisuallyHiddenOnly } from './wcag2/3/3.3/3.3.2/H44/label-visually-hidden-only';
 import { LegendFirstChildOfFieldSet } from './wcag2/3/3.3/3.3.2/H71/legend-first-child-of-fieldset';
 import { LinkButtonSpaceKey } from './wcag2/2/2.1/2.1.1/SCR35/link-button-space-key';
-import { LinkWithUnclearPurpose } from './aslint/link-with-unclear-purpose/link-with-unclear-purpose';
+import { LinkWithUnclearPurpose } from './wcag2/2/2.4/2.4.9/F84/link-with-unclear-purpose/link-with-unclear-purpose';
 import { LinksLanguageDestination } from './aslint/links-language-destination/links-language-destination';
 import { LinksNewWindowMark } from './wcag2/3/3.2/3.2.5/G201/links-new-window-mark';
 import { LinksSameContentDifferenceUrl } from './wcag2/2/2.4/2.4.4/H30/links-same-content-different-url';
