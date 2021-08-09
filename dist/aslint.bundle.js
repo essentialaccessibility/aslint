@@ -31,7 +31,7 @@
   	watchDomChanges: watchDomChanges
   };
 
-  var version = "0.0.55";
+  var version = "0.0.56";
 
   class Func {
       static mixin(targetObject, ...sources) {
@@ -21177,8 +21177,12 @@
       validate(elements) {
           const ids = {};
           const checkIdAttribute = (element) => {
-              const idAttr = element.getAttribute('id');
-              if (idAttr === null || idAttr.length === 0 || TextUtility.containsSpaceCharacter(idAttr)) {
+              let idAttr = element.getAttribute('id');
+              if (typeof idAttr !== 'string' || idAttr.length === 0) {
+                  return;
+              }
+              idAttr = TextUtility.normalizeWhitespaces(idAttr).trim();
+              if (TextUtility.containsSpaceCharacter(idAttr)) {
                   return;
               }
               if (ids[element.id]) {

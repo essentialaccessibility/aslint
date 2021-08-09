@@ -2,8 +2,7 @@ import { CATEGORY_TYPE } from '../../../../../../constants/categoryType';
 import { IIssueReport } from '../../../../../../interfaces/rule-issue.interface';
 import { TextUtility } from '../../../../../../utils/text';
 import { TranslateService } from '../../../../../../services/translate';
-import { $severity } from '../../../../../../constants/accessibility';
-import { $accessibilityAuditRules } from '../../../../../../constants/accessibility';
+import { $accessibilityAuditRules, $severity } from '../../../../../../constants/accessibility';
 import { AbstractRule, IAbstractRuleConfig } from '../../../../../abstract-rule';
 
 // Note: this rule is following https://www.w3.org/TR/2010/WD-html-markup-20100624/datatypes.html#common.data.id-def
@@ -30,13 +29,19 @@ export class DuplicatedIdAttribute extends AbstractRule {
     const ids: any = {};
 
     const checkIdAttribute = (element: Element): void => {
-      const idAttr: string | null = element.getAttribute('id');
+      let idAttr: string | null = element.getAttribute('id');
+
+      if (typeof idAttr !== 'string' || idAttr.length === 0) {
+        return;
+      }
+
+      idAttr = TextUtility.normalizeWhitespaces(idAttr).trim();
 
       /*
        *  Note: if attribute id value contains a space character https://www.w3.org/TR/2010/WD-html-markup-20100624/terminology.html#space
        *        then it's considered as invalid value
        */
-      if (idAttr === null || idAttr.length === 0 || TextUtility.containsSpaceCharacter(idAttr)) {
+      if (TextUtility.containsSpaceCharacter(idAttr)) {
         return;
       }
 

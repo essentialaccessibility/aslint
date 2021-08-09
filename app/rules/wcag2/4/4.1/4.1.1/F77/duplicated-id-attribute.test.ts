@@ -24,6 +24,18 @@ describe('Rules', () => {
       fakeDom = undefined;
     });
 
+    it('should return no reports when duplicated ids are the same, but the difference is in using space', () => {
+      const zeroWidthSpace: string = String.fromCharCode(8203);
+
+      fakeDom.innerHTML = `<div id="test">1</div><div id="test${zeroWidthSpace}">2</div>`;
+
+      const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
+
+      new DuplicatedIdAttribute().validate(nodes);
+
+      expect(Object.keys(Validator.getReports()).length).toBe(0);
+    });
+
     it('should return one report when there are duplicated ids on <div> and <div>', () => {
       fakeDom.innerHTML = '<div id="test">1</div><div id="test">2</div>';
       const nodes = DomUtility.querySelectorAllExclude(selector, fakeDom);
